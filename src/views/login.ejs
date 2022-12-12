@@ -1,12 +1,38 @@
 <%- include('./partials/header.ejs') %>
 
-    <form action="./login" method="POST">
-        <label for="username">Username</label>
-        <input id="username" type="text" name="username" required>
+    <% if (error) { %>
+        <div class="alert alert-danger" role="alert">
+           <%= message %> 
+        </div>
+    <% } %> 
 
-        <label for="password">Password</label>
-        <input id="password" type="password" name="password" required>
-        <button type="submit">Login</button>
-    </form>
+    <div class="container-md mt-4">
+        <h1 class="text-center"> Login </h1>
 
-<%- include('./partials/footer.ejs') %> 
+        <div class="d-flex justify-content-center mt-4">
+            <div class="bg-light px-5 pt-5 pb-3 border rounded">
+                <form action="./login" method="POST">
+                    <div class="mb-5">
+                        <div class="form-group row">
+                            <label for="InputUsername" class="col-form-label">Username</label>
+                            <div class="col">
+                                <input type="text" name="username" class="form-control" id="InputUsername" placeholder="Enter Username" autocomplete="false">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="InputPassword" class="col-form-label">Password</label>
+                            <div class="col">
+                                <input type="password" name="password" class="form-control" id="InputPassword" placeholder="Password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='../'">Back</button>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<%- include('./partials/footer.ejs') %>

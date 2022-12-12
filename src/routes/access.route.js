@@ -16,20 +16,19 @@ router.get('/logout', function(req, res) {
 
 router.route('/login')
     .get((req, res) => {
-        res.render('login');
+        res.render('login', {error: false, message: ''});
     })
     
-    .post((req, res, next) => {
+    .post((req, res) => {
         req.logIn(new User({
             username: req.body.username,
             password: req.body.password
         }), function(err) {
             if (err) {
-                res.send(err);
-                console.log(err);
+                res.render('error', {status: err.code || err.statusCode || 500, error: err});
             } else {
                 passport.authenticate('local')(req, res, function() {
-                    res.send('now a user');
+                    res.redirect(`../scum/${req.body.username}`);
                 });
             }
         });
@@ -40,15 +39,18 @@ router.route('/signup')
         res.render('signup');
     })
 
-    .post(async (req, res) => {
+    .post((req, res) => {
         User.register(new User({
             username: req.body.username,
             email: req.body.email,
         }), req.body.password, function(err, user) {
             if (err) {
-                res.render('error', {status: err.code || err.statusCode || 500});
+                res.render('error', {status: err.code || err.statusCode || 500, error: err});
             } else {
-                res.render('index');
+                req.logIn(user, function(err) {
+                    if (err) {res.render('error', {status: err.code || err.statusCode || 500, error: err})}
+                    res.redirect(`../scum/${req.body.username}`);
+                });
             }
         });
     });

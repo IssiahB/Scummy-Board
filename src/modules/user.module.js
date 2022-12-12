@@ -7,7 +7,9 @@ const userSchema = mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        minlength: 4,
+        maxlength: 20
     },
     email: {
         type: String,
@@ -20,15 +22,25 @@ const userSchema = mongoose.Schema({
         expire: Date
     },
     personals: {
-        name: [String],
+        name: {
+            type: [String],
+            maxlength: 3,
+            default: ['unknown']
+        },
         phoneNr: {
             type: String,
             match: /^(\()?\d{3}(\))?(-|\s)?\d{3}(-|\s)\d{4}$/
         },
-        gender: Boolean, // True is male False is female
-        birth: Date
+        gender: {
+            type: String,
+            enum: ['male', 'female', 'n/a'],
+            default: 'n/a'
+        },
+        birth: {
+            type: Date,
+        }
     }
-});
+}, {timestamps: true});
 
 // Config strategy
 userSchema.plugin(LocalMongooseStrategy, {
